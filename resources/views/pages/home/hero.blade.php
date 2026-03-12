@@ -13,24 +13,30 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
 
       {{-- Left: headline + CTAs --}}
-      <div class="lg:col-span-7">
-        <div class="anim-hidden animate-fade-in delay-100 inline-flex items-center gap-2 bg-urgent/15 border border-urgent/35 text-urgent/90 text-[11px] uppercase tracking-[0.2em] font-bold px-4 py-2 mb-8">
+      <div class="lg:col-span-7 order-2 lg:order-1">
+        <div class="animate-fade-in delay-100 inline-flex items-center gap-2 bg-urgent/15 border border-urgent/35 text-urgent/90 text-[11px] uppercase tracking-[0.2em] font-bold px-4 py-2 mb-8">
           <span class="w-2 h-2 bg-urgent rounded-full animate-pulse"></span>
           Available 24 Hours · 7 Days a Week
         </div>
 
+        {{-- Star rating trust line --}}
+        <div class="animate-fade-up delay-150 flex items-center gap-2 mb-5">
+          <span class="text-gold text-lg leading-none">★★★★★</span>
+          <span class="text-cream/60 text-sm">Rated by <span class="text-cream font-medium">500+</span> Orange County clients</span>
+        </div>
+
         <h1 class="font-display font-bold leading-none mb-2">
-          <span class="anim-hidden animate-fade-up delay-200 block text-cream text-6xl sm:text-8xl lg:text-[104px]">ARRESTED</span>
-          <span class="anim-hidden animate-fade-up delay-300 block text-gold italic text-4xl sm:text-6xl lg:text-7xl mt-2">in Orange County?</span>
+          <span class="animate-fade-up delay-200 block text-cream text-6xl sm:text-8xl lg:text-[104px]">ARRESTED</span>
+          <span class="animate-fade-up delay-300 block text-gold italic text-4xl sm:text-6xl lg:text-7xl mt-2">in Orange County?</span>
         </h1>
 
-        <div class="anim-hidden animate-fade-up delay-400 mt-8 mb-10 pl-5 border-l-2 border-gold/40">
+        <div class="animate-fade-up delay-400 mt-8 mb-10 pl-5 border-l-2 border-gold/40">
           <p class="text-cream/70 text-xl leading-relaxed max-w-lg">
             Every minute without a lawyer works against you. Get connected with an experienced OC criminal defense attorney — <span class="text-cream font-medium">right now.</span>
           </p>
         </div>
 
-        <div class="anim-hidden animate-fade-up delay-500 flex flex-col sm:flex-row gap-4">
+        <div class="animate-fade-up delay-500 flex flex-col sm:flex-row gap-4">
           <a href="tel:+17145550000"
              class="group flex items-center justify-center gap-3 bg-urgent hover:bg-urgent-dark text-white px-8 py-5 font-bold text-lg tracking-widest uppercase transition-all duration-200 hover:shadow-2xl hover:shadow-urgent/30 animate-glow-pulse">
             <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -44,7 +50,7 @@
           </a>
         </div>
 
-        <div class="anim-hidden animate-fade-up delay-600 mt-6 flex flex-wrap gap-6 text-cream/40 text-xs uppercase tracking-widest">
+        <div class="animate-fade-up delay-600 mt-6 flex flex-wrap gap-6 text-cream/40 text-xs uppercase tracking-widest">
           <span>✓ No Upfront Fees</span>
           <span>✓ Confidential</span>
           <span>✓ Se Habla Español</span>
@@ -53,7 +59,7 @@
       </div>
 
       {{-- Right: lead form card --}}
-      <div class="anim-hidden animate-fade-up delay-400 lg:col-span-5">
+      <div class="animate-fade-up delay-400 lg:col-span-5 order-1 lg:order-2">
         <div class="relative bg-navy-mid border border-gold/30 p-8">
           <div class="absolute -top-px left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-gold to-transparent"></div>
           <div class="absolute -top-4 left-6">
@@ -65,11 +71,9 @@
 
           <form class="space-y-3" method="POST" action="{{ home_url('/contact') }}">
             @php(wp_nonce_field('oca_contact', '_wpnonce'))
-            <input type="text"  name="name"  placeholder="Your Full Name"
+            <input type="text" name="name" placeholder="Your Full Name"
                    class="w-full bg-navy border border-gold/20 text-cream placeholder-cream/35 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors">
-            <input type="tel"   name="phone" placeholder="Phone Number"
-                   class="w-full bg-navy border border-gold/20 text-cream placeholder-cream/35 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors">
-            <input type="email" name="email" placeholder="Email Address (optional)"
+            <input type="tel" name="phone" placeholder="Phone Number"
                    class="w-full bg-navy border border-gold/20 text-cream placeholder-cream/35 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors">
             <select name="charge"
                     class="w-full bg-navy border border-gold/20 text-cream/80 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors">
@@ -82,15 +86,14 @@
               <option>Juvenile Offense</option>
               <option>Other</option>
             </select>
-            <textarea name="message" rows="3" placeholder="Brief description of the situation..."
-                      class="w-full bg-navy border border-gold/20 text-cream placeholder-cream/35 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors resize-none"></textarea>
             <button type="submit"
-                    class="w-full bg-gold hover:bg-gold-light text-navy font-bold py-4 text-sm uppercase tracking-[0.15em] transition-colors">
+                    class="w-full bg-urgent hover:bg-urgent-dark text-white font-bold py-4 text-sm uppercase tracking-[0.15em] transition-colors">
               Get Free Consultation →
             </button>
           </form>
 
-          <p class="mt-4 text-center text-cream/30 text-[11px]">100% Confidential · No Obligation · Attorney-Client Privilege</p>
+          <p class="mt-3 text-center text-cream/50 text-[11px]">We'll call you back immediately</p>
+          <p class="mt-1 text-center text-cream/30 text-[11px]">100% Confidential · No Obligation · Attorney-Client Privilege</p>
         </div>
       </div>
 

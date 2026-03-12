@@ -21,7 +21,7 @@
 
       @include('sections.header')
 
-      <main id="main">
+      <main id="main" class="pb-16 lg:pb-0">
         @yield('content')
       </main>
 
@@ -31,6 +31,7 @@
         </aside>
       @endif
 
+      @include('sections.mobile-cta-bar')
       @include('sections.footer')
     </div>
 
