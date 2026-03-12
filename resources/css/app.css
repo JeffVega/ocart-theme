@@ -2,3 +2,25 @@
 @source "../../app/**/*.php";
 @source "../**/*.blade.php";
 @source "../**/*.js";
+
+/* ─── Design tokens ──────────────────────────────────────────────────────── */
+@theme {
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body:    "DM Sans", system-ui, sans-serif;
+
+  --color-navy:        #07102a;
+  --color-navy-mid:    #0d1b3e;
+  --color-navy-light:  #162852;
+  --color-gold:        #c9a84c;
+  --color-gold-light:  #e4c878;
+  --color-cream:       #f4efe5;
+  --color-cream-dark:  #e8dfc9;
+  --color-urgent:      #c41e1e;
+  --color-urgent-dark: #9a1515;
+}
+
+/* ─── Partials ───────────────────────────────────────────────────────────── */
+@import "./animations.css";
+@import "./header.css";
+@import "./faq.css";
+@import "./components.css";

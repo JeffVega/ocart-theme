@@ -1,0 +1,8 @@
+/* ─── Sticky header — applied via JS .is-scrolled class ──────────────────── */
+#site-header.is-scrolled .header-bg {
+  background-color: rgba(7, 16, 42, 0.97);
+  backdrop-filter: blur(-webkit-fill-available);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom-color: rgba(201, 168, 76, 0.25);
+}
