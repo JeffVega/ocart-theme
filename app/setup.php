@@ -85,6 +85,7 @@ add_action('after_setup_theme', function () {
      */
     register_nav_menus([
         'primary_navigation' => __('Primary Navigation', 'sage'),
+        'footer_navigation'  => __('Footer Navigation', 'sage'),
     ]);
 
     /**
@@ -137,6 +138,150 @@ add_action('after_setup_theme', function () {
      */
     add_theme_support('customize-selective-refresh-widgets');
 }, 20);
+
+/**
+ * Shared geo data for Orange County, California.
+ * Used by both the standalone schema and the Rank Math filter.
+ */
+function ocart_geo_area_served(): array
+{
+    return [
+        ['@type' => 'AdministrativeArea', 'name' => 'Orange County, California'],
+        ['@type' => 'City', 'name' => 'Anaheim, CA'],
+        ['@type' => 'City', 'name' => 'Irvine, CA'],
+        ['@type' => 'City', 'name' => 'Santa Ana, CA'],
+        ['@type' => 'City', 'name' => 'Fullerton, CA'],
+        ['@type' => 'City', 'name' => 'Huntington Beach, CA'],
+        ['@type' => 'City', 'name' => 'Newport Beach, CA'],
+        ['@type' => 'City', 'name' => 'Orange, CA'],
+        ['@type' => 'City', 'name' => 'Costa Mesa, CA'],
+        ['@type' => 'City', 'name' => 'Garden Grove, CA'],
+    ];
+}
+
+function ocart_geo_coordinates(): array
+{
+    return [
+        '@type'     => 'GeoCoordinates',
+        'latitude'  => 33.7175,
+        'longitude' => -117.8311,
+    ];
+}
+
+/**
+ * Output geo meta tags in <head>.
+ *
+ * These are safe to output alongside any SEO plugin — Rank Math, Yoast,
+ * and others do not emit geo meta tags, so there is no duplication risk.
+ * geo.region uses ISO 3166-2 (US-CA) to unambiguously target California,
+ * not Orange County, Florida.
+ */
+add_action('wp_head', function () {
+    echo "\n<!-- Geo targeting: Orange County, California (US-CA) -->\n";
+    echo '<meta name="geo.region" content="US-CA">' . "\n";
+    echo '<meta name="geo.placename" content="Orange County, California">' . "\n";
+    echo '<meta name="geo.position" content="33.7175;-117.8311">' . "\n";
+    echo '<meta name="ICBM" content="33.7175, -117.8311">' . "\n";
+
+    // Only output our own JSON-LD when Rank Math is NOT active.
+    // When Rank Math IS active we inject via rank_math/json_ld filter below
+    // to avoid duplicate LocalBusiness entities in the same page.
+    if (class_exists('RankMath\RankMath')) {
+        return;
+    }
+
+    $schema = [
+        '@context'    => 'https://schema.org',
+        '@type'       => ['LegalService', 'LocalBusiness'],
+        'name'        => 'OC Arrested',
+        'description' => 'Criminal defense attorney referral service for Orange County, California. We connect arrested individuals with experienced OC defense lawyers 24/7.',
+        'url'         => home_url('/'),
+        'telephone'   => get_theme_mod('ocart_phone_number', '(000) 000-0000'),
+        'priceRange'  => 'Free Referral',
+        'openingHours' => 'Mo-Su 00:00-23:59',
+        'address' => [
+            '@type'           => 'PostalAddress',
+            'addressLocality' => 'Orange County',
+            'addressRegion'   => 'CA',
+            'addressCountry'  => 'US',
+        ],
+        'geo'        => ocart_geo_coordinates(),
+        'areaServed' => ocart_geo_area_served(),
+    ];
+
+    echo '<script type="application/ld+json">'
+        . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+        . '</script>' . "\n";
+}, 1);
+
+/**
+ * When Rank Math IS active, merge our geo data into its schema output
+ * instead of adding a duplicate LocalBusiness block.
+ *
+ * We find Rank Math's existing LocalBusiness entity (if any) and add our
+ * geo + areaServed data to it. If Rank Math hasn't added a LocalBusiness
+ * entity yet (e.g. its Local SEO module is off), we append a minimal one.
+ *
+ * Priority 99 runs after Rank Math builds all its entities.
+ */
+add_filter('rank_math/json_ld', function (array $data): array {
+    $geoProps = [
+        'geo'        => ocart_geo_coordinates(),
+        'areaServed' => ocart_geo_area_served(),
+        'address'    => [
+            '@type'           => 'PostalAddress',
+            'addressLocality' => 'Orange County',
+            'addressRegion'   => 'CA',
+            'addressCountry'  => 'US',
+        ],
+    ];
+
+    $localBusinessTypes = ['LocalBusiness', 'LegalService', 'Attorney', 'LawOffice'];
+
+    // Try to find and extend Rank Math's existing LocalBusiness-family entity
+    foreach ($data as $key => &$entity) {
+        $types = (array) ($entity['@type'] ?? []);
+        if (array_intersect($types, $localBusinessTypes)) {
+            $entity = array_merge($entity, $geoProps);
+            return $data;
+        }
+    }
+    unset($entity);
+
+    // No LocalBusiness entity found — append a minimal one so geo data lands
+    $data['OCALocalBusiness'] = array_merge([
+        '@type'     => ['LegalService', 'LocalBusiness'],
+        'name'      => 'OC Arrested',
+        'url'       => home_url('/'),
+        'telephone' => get_theme_mod('ocart_phone_number', '(000) 000-0000'),
+    ], $geoProps);
+
+    return $data;
+}, 99);
+
+/**
+ * Register theme customizer settings.
+ *
+ * @return void
+ */
+add_action('customize_register', function (\WP_Customize_Manager $wp_customize) {
+    $wp_customize->add_section('ocart_contact', [
+        'title'    => __('Contact Information', 'sage'),
+        'priority' => 30,
+    ]);
+
+    $wp_customize->add_setting('ocart_phone_number', [
+        'default'           => '(000) 000-0000',
+        'sanitize_callback' => 'sanitize_text_field',
+        'transport'         => 'refresh',
+    ]);
+
+    $wp_customize->add_control('ocart_phone_number', [
+        'label'   => __('Phone Number', 'sage'),
+        'section' => 'ocart_contact',
+        'type'    => 'text',
+    ]);
+});
 
 /**
  * Register the theme sidebars.

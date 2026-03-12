@@ -101,7 +101,7 @@ $areas = [
                   </li>
                   @endforeach
                 </ul>
-                <a href="tel:+17145550000"
+                <a href="{{ $phoneTel }}"
                    class="mt-6 flex items-center justify-center gap-2 bg-urgent hover:bg-urgent-dark text-white text-[11px] uppercase tracking-[0.15em] font-bold py-3 transition-colors w-full">
                   Call Now — Free Consult
                 </a>

@@ -48,7 +48,7 @@
   @include('components.cta-banner', [
     'heading'  => 'Need Legal Help?',
     'body'     => 'Reading about it is a start. Talking to an attorney is the next step — free and confidential.',
-    'link'     => 'tel:+17145550000',
-    'linkText' => '(714) 555-0000',
+    'link'     => $phoneTel,
+    'linkText' => $phoneDisplay,
   ])
 @endsection

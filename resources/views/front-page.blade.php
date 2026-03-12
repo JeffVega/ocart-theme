@@ -14,8 +14,8 @@
   @include('components.cta-banner', [
     'heading'       => 'Don\'t Wait.',
     'body'          => 'Every hour without an attorney can cost you your case. Call now — a real lawyer answers 24/7.',
-    'link'          => 'tel:+17145550000',
-    'linkText'      => '(714) 555-0000',
+    'link'          => $phoneTel,
+    'linkText'      => $phoneDisplay,
     'secondaryLink' => home_url('/contact'),
     'secondaryText' => 'Send a Message',
   ])

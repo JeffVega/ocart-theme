@@ -20,13 +20,13 @@
           Arrested in Orange County? We connect you with experienced criminal defense attorneys immediately — 24 hours a day, 7 days a week.
         </p>
 
-        <a href="tel:+17145550000" class="inline-flex items-center gap-3 text-gold hover:text-gold-light transition-colors group">
+        <a href="{{ $phoneTel }}" class="inline-flex items-center gap-3 text-gold hover:text-gold-light transition-colors group">
           <div class="w-10 h-10 border border-gold/40 flex items-center justify-center group-hover:border-gold transition-colors shrink-0">
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
             </svg>
           </div>
-          <span class="font-display text-2xl font-bold">(714) 555-0000</span>
+          <span class="font-display text-2xl font-bold">{{ $phoneDisplay }}</span>
         </a>
 
         <div class="mt-4 flex items-center gap-2 text-cream/40 text-xs">
@@ -39,20 +39,17 @@
       <div class="lg:col-span-3">
         <h4 class="text-gold font-display text-base font-bold tracking-[0.15em] uppercase mb-6">Quick Links</h4>
         <ul class="space-y-3">
-          @foreach ([
-            ['About Us',       '/about'],
-            ['Practice Areas', '/practice-areas'],
-            ['Case Results',   '/results'],
-            ['Testimonials',   '/results#testimonials'],
-            ['FAQ',            '/faq'],
-            ['Contact',        '/contact'],
-          ] as [$label, $url])
-          <li>
-            <a href="{{ home_url($url) }}" class="text-cream/55 hover:text-gold transition-colors text-sm tracking-wide flex items-center gap-2 group">
-              <span class="w-3 h-px bg-gold/30 group-hover:bg-gold group-hover:w-5 transition-all duration-200"></span>
-              {{ $label }}
-            </a>
-          </li>
+          @foreach ($footerMenuItems as $item)
+            <li>
+              <a href="{{ $item['url'] }}"
+                 class="text-sm tracking-wide flex items-center gap-2 group transition-colors
+                        {{ $item['isActive'] ? 'text-gold' : 'text-cream/55 hover:text-gold' }}"
+                 @if($item['isActive']) aria-current="page" @endif>
+                <span class="h-px transition-all duration-200
+                             {{ $item['isActive'] ? 'w-5 bg-gold' : 'w-3 bg-gold/30 group-hover:bg-gold group-hover:w-5' }}"></span>
+                {{ $item['label'] }}
+              </a>
+            </li>
           @endforeach
         </ul>
       </div>
@@ -80,9 +77,9 @@
         </ul>
 
         <div class="mt-8 bg-navy-mid border border-gold/20 p-5">
-          <div class="text-xs text-cream/40 uppercase tracking-widest mb-2">Serving All of OC</div>
+          <div class="text-xs text-cream/40 uppercase tracking-widest mb-2">Serving Orange County, California</div>
           <p class="text-cream/60 text-xs leading-relaxed">
-            Anaheim · Irvine · Santa Ana · Fullerton · Huntington Beach · Newport Beach · Orange · Costa Mesa · Garden Grove
+            Anaheim, CA · Irvine, CA · Santa Ana, CA · Fullerton, CA · Huntington Beach, CA · Newport Beach, CA · Orange, CA · Costa Mesa, CA · Garden Grove, CA
           </p>
         </div>
       </div>

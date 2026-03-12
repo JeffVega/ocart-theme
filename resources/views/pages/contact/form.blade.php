@@ -93,8 +93,8 @@
           <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(154,21,21,0.5)_0%,_transparent_60%)]"></div>
           <div class="relative z-10">
             <div class="text-white/60 text-[11px] uppercase tracking-[0.2em] font-bold mb-2">Best Way to Reach Us</div>
-            <a href="tel:+17145550000" class="block font-display text-4xl text-white font-bold hover:text-cream/90 transition-colors mb-4">
-              (714) 555-0000
+            <a href="{{ $phoneTel }}" class="block font-display text-4xl text-white font-bold hover:text-cream/90 transition-colors mb-4">
+              {{ $phoneDisplay }}
             </a>
             <div class="flex items-center gap-2 text-white/70 text-sm">
               <span class="w-2 h-2 bg-white/60 rounded-full animate-pulse"></span>

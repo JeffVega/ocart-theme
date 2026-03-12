@@ -1,4 +1,4 @@
-<article @php(post_class(''))>
+<article class="{{ implode(' ', get_post_class('')) }}">
 
   {{-- Post hero --}}
   <div class="relative bg-navy pt-36 pb-16 overflow-hidden">
@@ -13,7 +13,7 @@
            class="text-cream/40 text-[11px] uppercase tracking-[0.15em] hover:text-gold transition-colors">
           ← Legal Resources
         </a>
-        @php($category = get_the_category())
+        @php $category = get_the_category() @endphp
         @if($category)
           <span class="text-gold/30">|</span>
           <a href="{{ get_category_link($category[0]->term_id) }}"
@@ -52,7 +52,7 @@
         {{-- Main content --}}
         <div class="lg:col-span-8">
           <div class="post-content text-cream/80 leading-relaxed">
-            @php(the_content())
+            @php the_content() @endphp
           </div>
 
           {{-- Page pagination (multi-page posts) --}}
@@ -64,7 +64,7 @@
           @endif
 
           {{-- Tags --}}
-          @php($tags = get_the_tags())
+          @php $tags = get_the_tags() @endphp
           @if($tags)
             <div class="mt-10 pt-8 border-t border-gold/15">
               <div class="text-cream/40 text-[11px] uppercase tracking-[0.15em] mb-3">Topics</div>
@@ -110,7 +110,7 @@
           @endif
 
           {{-- Comments --}}
-          @php(comments_template())
+          @php comments_template() @endphp
         </div>
 
         {{-- Sidebar --}}
@@ -122,12 +122,12 @@
             <div class="relative z-10">
               <div class="text-white/60 text-[10px] uppercase tracking-[0.2em] font-bold mb-2">Arrested?</div>
               <p class="text-white font-display text-xl font-bold mb-4 leading-tight">Get a Free Case Evaluation Now</p>
-              <a href="tel:+17145550000"
+              <a href="{{ $phoneTel }}"
                  class="flex items-center gap-2 text-white font-bold text-lg hover:text-white/80 transition-colors">
                 <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
                 </svg>
-                (714) 555-0000
+                {{ $phoneDisplay }}
               </a>
               <div class="mt-3 text-white/50 text-[11px]">Free · 24/7 · Confidential</div>
             </div>
@@ -165,7 +165,7 @@
               <h3 class="text-gold font-display text-base font-bold uppercase tracking-[0.12em] mb-5">More Articles</h3>
               <ul class="space-y-4">
                 @foreach($recent as $post)
-                  @php(setup_postdata($post))
+                  @php setup_postdata($post) @endphp
                   <li class="border-b border-gold/10 pb-4 last:border-0 last:pb-0">
                     <a href="{{ get_permalink($post) }}"
                        class="text-cream/70 hover:text-gold transition-colors text-sm leading-snug font-medium">
@@ -174,7 +174,7 @@
                     <div class="text-cream/30 text-[11px] mt-1">{{ get_the_date('M j, Y', $post) }}</div>
                   </li>
                 @endforeach
-                @php(wp_reset_postdata())
+                @php wp_reset_postdata() @endphp
               </ul>
             </div>
           @endif

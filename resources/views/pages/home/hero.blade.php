@@ -37,12 +37,12 @@
         </div>
 
         <div class="animate-fade-up delay-500 flex flex-col sm:flex-row gap-4">
-          <a href="tel:+17145550000"
+          <a href="{{ $phoneTel }}"
              class="group flex items-center justify-center gap-3 bg-urgent hover:bg-urgent-dark text-white px-8 py-5 font-bold text-lg tracking-widest uppercase transition-all duration-200 hover:shadow-2xl hover:shadow-urgent/30 animate-glow-pulse">
             <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
               <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
             </svg>
-            Call (714) 555-0000
+            Call {{ $phoneDisplay }}
           </a>
           <a href="{{ home_url('/contact') }}"
              class="flex items-center justify-center gap-3 border border-gold text-gold hover:bg-gold hover:text-navy px-8 py-5 font-bold text-lg tracking-widest uppercase transition-all duration-200">

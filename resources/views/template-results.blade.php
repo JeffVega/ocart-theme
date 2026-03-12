@@ -14,8 +14,8 @@
   @include('components.cta-banner', [
     'heading'       => 'Your Result is Next.',
     'body'          => 'These cases were won because someone called in time. Don\'t wait — your free consultation is one call away.',
-    'link'          => 'tel:+17145550000',
-    'linkText'      => '(714) 555-0000',
+    'link'          => $phoneTel,
+    'linkText'      => $phoneDisplay,
     'secondaryLink' => home_url('/contact'),
     'secondaryText' => 'Request a Callback',
   ])
