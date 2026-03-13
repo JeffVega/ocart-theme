@@ -6,3 +6,4 @@ import.meta.glob([
 import './header.js';
 import './faq.js';
 import './animations.js';
+import './single.js';

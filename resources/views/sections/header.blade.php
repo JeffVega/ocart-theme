@@ -19,27 +19,30 @@
           @foreach ($headerMenuItems as $item)
             @if(!empty($item['children']))
               {{-- Parent item with dropdown --}}
-              <div class="relative group">
+              <div class="relative group" data-dropdown>
                 <a href="{{ $item['url'] }}"
                    class="relative text-[13px] tracking-widest uppercase font-medium transition-colors pb-1 inline-flex items-center gap-1
                           {{ $item['isActive'] ? 'text-gold' : 'text-cream/70 hover:text-gold' }}"
                    @if($item['isActive']) aria-current="page" @endif
-                   aria-haspopup="true">
+                   aria-haspopup="true"
+                   aria-expanded="false">
                   {{ $item['label'] }}
-                  <svg class="w-3 h-3 transition-transform duration-200 group-hover:rotate-180 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-3 h-3 transition-transform duration-200 [@media(hover:hover)]:group-hover:rotate-180 shrink-0"
+                       data-dropdown-chevron fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
                   </svg>
                   {{-- Animated underline --}}
                   <span class="absolute bottom-0 left-0 h-px bg-gold transition-all duration-300
-                               {{ $item['isActive'] ? 'w-full' : 'w-0 group-hover:w-full' }}"
+                               {{ $item['isActive'] ? 'w-full' : 'w-0 [@media(hover:hover)]:group-hover:w-full' }}"
                         style="right: 1rem;"></span>
                 </a>
 
                 {{-- Dropdown panel --}}
                 <div class="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-52
                             invisible opacity-0 translate-y-1
-                            group-hover:visible group-hover:opacity-100 group-hover:translate-y-0
+                            [@media(hover:hover)]:group-hover:visible [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-hover:translate-y-0
                             transition-all duration-200 ease-out z-50"
+                     data-dropdown-panel
                      role="menu">
                   <div class="relative bg-navy-mid border border-gold/25 shadow-2xl shadow-navy/80 overflow-hidden">
                     {{-- Top accent line --}}

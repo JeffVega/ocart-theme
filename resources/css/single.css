@@ -1,0 +1,125 @@
+/* ── Single blog post styles ─────────────────────────────────────────────── */
+/* Cognitive Ease (Kahneman, 2011): optimal line-length (60–75 chars),       */
+/* 1.7–1.8 line-height, and clear heading hierarchy measurably reduce        */
+/* cognitive load and increase reading completion rates.                     */
+/* Source: Dyson, M.C. (2004). How physical text layout affects reading      */
+/* from screen. Behaviour & Information Technology, 23(6), 377–393.          */
+
+/* ── Post prose ─────────────────────────────────────────────────────────── */
+.post-content {
+  color: rgba(var(--color-cream, 253 246 232) / 0.78);
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  max-width: 68ch; /* Dyson (2004): 60–75 chars optimal for screen reading */
+}
+.post-content h2 {
+  font-family: var(--font-display, 'Cormorant Garamond', serif);
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+  font-weight: 700;
+  color: #f5e6c8;
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  scroll-margin-top: 6rem;
+}
+.post-content h3 {
+  font-family: var(--font-display, 'Cormorant Garamond', serif);
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  font-weight: 700;
+  color: rgba(245, 230, 200, 0.85);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  scroll-margin-top: 6rem;
+}
+.post-content p { margin-bottom: 1.4rem; }
+.post-content a {
+  color: #c9a84c;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(201,168,76,0.35);
+  transition: text-decoration-color 0.15s;
+}
+.post-content a:hover { text-decoration-color: #c9a84c; }
+.post-content ul,
+.post-content ol {
+  margin-left: 1.25rem;
+  margin-bottom: 1.4rem;
+}
+.post-content ul { list-style: none; padding-left: 0; }
+.post-content ul li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+.post-content ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.75em;
+  width: 0.5rem;
+  height: 1px;
+  background: rgba(201,168,76,0.6);
+}
+.post-content ol { list-style: decimal; padding-left: 1.25rem; }
+.post-content ol li { margin-bottom: 0.5rem; }
+.post-content blockquote {
+  border-left: 2px solid #c9a84c;
+  margin: 2rem 0;
+  padding: 1rem 1.5rem;
+  background: rgba(201,168,76,0.04);
+  font-family: var(--font-display, 'Cormorant Garamond', serif);
+  font-size: 1.35rem;
+  font-style: italic;
+  color: rgba(245,230,200,0.75);
+  line-height: 1.6;
+}
+.post-content blockquote cite {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-family: sans-serif;
+  color: rgba(245,230,200,0.35);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.post-content img {
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(201,168,76,0.15);
+  margin: 1.5rem 0;
+}
+.post-content strong { color: rgba(245,230,200,0.95); font-weight: 600; }
+.post-content em { color: rgba(245,230,200,0.85); }
+.post-content hr {
+  border: none;
+  border-top: 1px solid rgba(201,168,76,0.15);
+  margin: 2.5rem 0;
+}
+.post-content code {
+  font-size: 0.85em;
+  background: rgba(201,168,76,0.08);
+  border: 1px solid rgba(201,168,76,0.2);
+  padding: 0.1em 0.4em;
+  color: rgba(201,168,76,0.9);
+}
+
+/* ── TOC links ──────────────────────────────────────────────────────────── */
+.toc-link {
+  display: block;
+  padding: 0.3rem 0;
+  color: rgba(245,230,200,0.45);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  border-left: 2px solid transparent;
+  padding-left: 0.75rem;
+  transition: color 0.15s, border-color 0.15s;
+  text-decoration: none;
+}
+.toc-link:hover { color: rgba(245,230,200,0.75); }
+.toc-link.active {
+  color: #c9a84c;
+  border-left-color: #c9a84c;
+}
+.toc-link.toc-h3 { padding-left: 1.5rem; font-size: 0.75rem; }
