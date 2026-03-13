@@ -283,6 +283,139 @@ add_action('customize_register', function (\WP_Customize_Manager $wp_customize) 
     ]);
 });
 
+// ─── Contact form AJAX handler ────────────────────────────────────────────────
+add_action('wp_ajax_oca_contact',        __NAMESPACE__ . '\\handle_oca_contact');
+add_action('wp_ajax_nopriv_oca_contact', __NAMESPACE__ . '\\handle_oca_contact');
+
+function handle_oca_contact(): void
+{
+    // 1. Nonce check
+    if (empty($_POST['_wpnonce']) || ! wp_verify_nonce($_POST['_wpnonce'], 'oca_contact')) {
+        wp_send_json_error(['message' => 'Security check failed. Please refresh the page and try again.'], 403);
+    }
+
+    // 2. Sanitize raw input
+    $name   = sanitize_text_field(wp_unslash($_POST['name']   ?? ''));
+    $phone  = sanitize_text_field(wp_unslash($_POST['phone']  ?? ''));
+    $charge = sanitize_text_field(wp_unslash($_POST['charge'] ?? ''));
+    $agree  = ! empty($_POST['agree_terms']);
+
+    // 3. Validate
+    $errors = [];
+
+    if (mb_strlen($name) < 2) {
+        $errors[] = 'Please enter your full name.';
+    }
+
+    if (! preg_match('/^\+?1?[\s.\-]?\(?\d{3}\)?[\s.\-]?\d{3}[\s.\-]?\d{4}$/', $phone)) {
+        $errors[] = 'Please enter a valid US phone number.';
+    }
+
+    $allowed_charges = [
+        'DUI / DWI', 'Drug Possession / Sales', 'Assault & Battery',
+        'Domestic Violence', 'Theft / Robbery', 'Juvenile Offense', 'Other',
+    ];
+    if (! in_array($charge, $allowed_charges, true)) {
+        $errors[] = 'Please select a valid charge type.';
+    }
+
+    if (! $agree) {
+        $errors[] = 'You must agree to the Terms of Service.';
+    }
+
+    if ($errors) {
+        wp_send_json_error(['message' => implode(' ', $errors)], 422);
+    }
+
+    // 4. Send notification email
+    $admin_email = get_option('admin_email');
+    $subject     = sprintf('[OC Arrested] New lead: %s — %s', $name, $charge);
+    $body        = implode("\n", [
+        "Name:   {$name}",
+        "Phone:  {$phone}",
+        "Charge: {$charge}",
+        '',
+        'Submitted via the hero form on ' . home_url('/'),
+    ]);
+
+    wp_mail($admin_email, $subject, $body, ['Content-Type: text/plain; charset=UTF-8']);
+
+    wp_send_json_success(['message' => "We've received your request and will be in touch shortly."]);
+}
+
+// ─── Full contact page form AJAX handler ─────────────────────────────────────
+add_action('wp_ajax_oca_contact_full',        __NAMESPACE__ . '\\handle_oca_contact_full');
+add_action('wp_ajax_nopriv_oca_contact_full', __NAMESPACE__ . '\\handle_oca_contact_full');
+
+function handle_oca_contact_full(): void
+{
+    // 1. Nonce check
+    if (empty($_POST['_wpnonce']) || ! wp_verify_nonce($_POST['_wpnonce'], 'oca_contact_full')) {
+        wp_send_json_error(['message' => 'Security check failed. Please refresh the page and try again.'], 403);
+    }
+
+    // 2. Sanitize
+    $name    = sanitize_text_field(wp_unslash($_POST['name']    ?? ''));
+    $phone   = sanitize_text_field(wp_unslash($_POST['phone']   ?? ''));
+    $email   = sanitize_email(wp_unslash($_POST['email']        ?? ''));
+    $charge  = sanitize_text_field(wp_unslash($_POST['charge']  ?? ''));
+    $city    = sanitize_text_field(wp_unslash($_POST['city']    ?? ''));
+    $message = sanitize_textarea_field(wp_unslash($_POST['message'] ?? ''));
+    $consent = ! empty($_POST['consent']);
+
+    // 3. Validate
+    $errors = [];
+
+    if (mb_strlen($name) < 2) {
+        $errors[] = 'Please enter your full name.';
+    }
+
+    if (! preg_match('/^\+?1?[\s.\-]?\(?\d{3}\)?[\s.\-]?\d{3}[\s.\-]?\d{4}$/', $phone)) {
+        $errors[] = 'Please enter a valid US phone number.';
+    }
+
+    if ($email !== '' && ! is_email($email)) {
+        $errors[] = 'Please enter a valid email address.';
+    }
+
+    $allowed_charges = [
+        'DUI / DWI', 'Drug Possession / Sales', 'Assault & Battery',
+        'Domestic Violence', 'Theft / Robbery', 'Juvenile Offense',
+        'Expungement', 'Other',
+    ];
+    if (! in_array($charge, $allowed_charges, true)) {
+        $errors[] = 'Please select a valid charge type.';
+    }
+
+    if (! $consent) {
+        $errors[] = 'You must accept the terms to continue.';
+    }
+
+    if ($errors) {
+        wp_send_json_error(['message' => implode(' ', $errors)], 422);
+    }
+
+    // 4. Send notification email
+    $admin_email = get_option('admin_email');
+    $subject     = sprintf('[OC Arrested] Contact form: %s — %s', $name, $charge);
+    $lines       = [
+        "Name:    {$name}",
+        "Phone:   {$phone}",
+        "Email:   " . ($email ?: '—'),
+        "Charge:  {$charge}",
+        "City:    " . ($city ?: '—'),
+        '',
+        "Message:",
+        $message ?: '(none)',
+        '',
+        'Submitted via the contact page on ' . home_url('/contact'),
+    ];
+
+    wp_mail($admin_email, $subject, implode("\n", $lines), ['Content-Type: text/plain; charset=UTF-8']);
+
+    wp_send_json_success(['message' => "We've received your request and will be in touch shortly."]);
+}
+
 /**
  * Register the theme sidebars.
  *

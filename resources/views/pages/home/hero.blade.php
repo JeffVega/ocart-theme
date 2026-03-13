@@ -69,13 +69,20 @@
           <h3 class="font-display text-2xl text-cream font-bold mb-1 mt-3">Get Help Immediately</h3>
           <p class="text-cream/50 text-sm mb-6">Tell us what happened. We'll respond within minutes.</p>
 
-          <form class="space-y-3" method="POST" action="{{ home_url('/contact') }}">
+          <form id="hero-lead-form" class="space-y-3" method="POST"
+                action="{{ admin_url('admin-ajax.php') }}" novalidate>
             @php(wp_nonce_field('oca_contact', '_wpnonce'))
-            <input type="text" name="name" placeholder="Your Full Name"
+            <input type="hidden" name="action" value="oca_contact">
+
+            <input type="text" name="name" placeholder="Your Full Name" required
+                   autocomplete="name"
                    class="w-full bg-navy border border-gold/20 text-cream placeholder-cream/35 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors">
-            <input type="tel" name="phone" placeholder="Phone Number"
+            <input type="tel" name="phone" placeholder="(000) 000-0000" required
+                   autocomplete="tel"
+                   pattern="^\+?1?[\s.\-]?\(?\d{3}\)?[\s.\-]?\d{3}[\s.\-]?\d{4}$"
+                   title="Please enter a valid 10-digit US phone number"
                    class="w-full bg-navy border border-gold/20 text-cream placeholder-cream/35 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors">
-            <select name="charge"
+            <select name="charge" required
                     class="w-full bg-navy border border-gold/20 text-cream/80 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors">
               <option value="" disabled selected>Type of Charge</option>
               <option>DUI / DWI</option>
@@ -86,14 +93,34 @@
               <option>Juvenile Offense</option>
               <option>Other</option>
             </select>
-            <button type="submit"
-                    class="w-full bg-urgent hover:bg-urgent-dark text-white font-bold py-4 text-sm uppercase tracking-[0.15em] transition-colors">
+            <label class="flex items-start gap-2.5 cursor-pointer">
+              <input type="checkbox" name="agree_terms" required
+                     class="mt-0.5 shrink-0 accent-gold w-3.5 h-3.5">
+              <span class="text-cream/50 text-[11px] leading-relaxed">
+                By submitting, I agree to be contacted and accept the
+                <a href="{{ home_url('/terms-of-service') }}" class="text-gold underline hover:text-gold-light transition-colors" target="_blank">Terms of Service</a>
+              </span>
+            </label>
+
+            {{-- Inline error message --}}
+            <p id="hero-form-error" class="hidden text-urgent text-xs text-center pt-1"></p>
+
+            <button type="submit" id="hero-form-btn"
+                    class="w-full bg-urgent hover:bg-urgent-dark text-white font-bold py-4 text-sm uppercase tracking-[0.15em] transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
               Get Free Consultation →
             </button>
           </form>
 
-          <p class="mt-3 text-center text-cream/50 text-[11px]">We'll call you back immediately</p>
-          <p class="mt-1 text-center text-cream/30 text-[11px]">100% Confidential · No Obligation · Attorney-Client Privilege</p>
+          {{-- Success state (hidden until form submits) --}}
+          <div id="hero-form-success" class="hidden text-center py-6">
+            <div class="w-14 h-14 mx-auto mb-4 border-2 border-gold flex items-center justify-center">
+              <svg class="w-7 h-7 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <h4 class="font-display text-xl text-cream font-bold mb-2">We've Got Your Request</h4>
+            <p class="text-cream/60 text-sm">Someone will be in touch with you shortly. Keep your phone nearby.</p>
+          </div>
         </div>
       </div>
 

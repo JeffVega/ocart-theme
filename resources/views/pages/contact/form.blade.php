@@ -11,31 +11,31 @@
           <h2 class="font-display text-3xl text-cream font-bold mb-2">Free Case Evaluation</h2>
           <p class="text-cream/50 text-sm mb-8">We review your situation and connect you with the right OC defense attorney.</p>
 
-          @if(session('contact_success'))
-          <div class="bg-green-900/30 border border-green-500/40 text-green-400 text-sm px-5 py-4 mb-6">
-            ✓ Your message was received. We'll be in touch within minutes.
-          </div>
-          @endif
-
-          <form method="POST" action="{{ home_url('/contact') }}" class="space-y-4">
-            @php(wp_nonce_field('oca_contact', '_wpnonce'))
+          <form id="contact-lead-form" method="POST"
+                action="{{ admin_url('admin-ajax.php') }}"
+                class="space-y-4" novalidate>
+            @php(wp_nonce_field('oca_contact_full', '_wpnonce'))
+            <input type="hidden" name="action" value="oca_contact_full">
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-cream/50 text-[11px] uppercase tracking-[0.15em] mb-2">Full Name *</label>
-                <input type="text" name="name" required
+                <input type="text" name="name" required autocomplete="name"
                        class="w-full bg-navy-mid border border-gold/20 text-cream placeholder-cream/30 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors">
               </div>
               <div>
                 <label class="block text-cream/50 text-[11px] uppercase tracking-[0.15em] mb-2">Phone Number *</label>
-                <input type="tel" name="phone" required
+                <input type="tel" name="phone" required autocomplete="tel"
+                       placeholder="(000) 000-0000"
+                       pattern="^\+?1?[\s.\-]?\(?\d{3}\)?[\s.\-]?\d{3}[\s.\-]?\d{4}$"
+                       title="Please enter a valid 10-digit US phone number"
                        class="w-full bg-navy-mid border border-gold/20 text-cream placeholder-cream/30 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors">
               </div>
             </div>
 
             <div>
               <label class="block text-cream/50 text-[11px] uppercase tracking-[0.15em] mb-2">Email Address</label>
-              <input type="email" name="email"
+              <input type="email" name="email" autocomplete="email"
                      class="w-full bg-navy-mid border border-gold/20 text-cream placeholder-cream/30 px-4 py-3 text-sm focus:outline-none focus:border-gold transition-colors">
             </div>
 
@@ -70,18 +70,34 @@
             </div>
 
             <div class="flex items-start gap-3">
-              <input type="checkbox" name="consent" id="consent" required
+              <input type="checkbox" name="consent" id="contact-consent" required
                      class="mt-1 shrink-0 w-4 h-4 border border-gold/30 bg-navy-mid checked:bg-gold accent-gold">
-              <label for="consent" class="text-cream/45 text-xs leading-relaxed">
-                I understand that submitting this form does not create an attorney-client relationship and that the information I provide is confidential.
+              <label for="contact-consent" class="text-cream/45 text-xs leading-relaxed">
+                By submitting, I agree to be contacted and accept the
+                <a href="{{ home_url('/terms-of-service') }}" class="text-gold underline hover:text-gold-light transition-colors" target="_blank">Terms of Service</a>.
+                OC Arrested is not a law firm. Submitting this form does not create an attorney-client relationship.
               </label>
             </div>
 
-            <button type="submit"
-                    class="w-full bg-gold hover:bg-gold-light text-navy font-bold py-4 text-sm uppercase tracking-[0.15em] transition-colors mt-2">
+            {{-- Inline error --}}
+            <p id="contact-form-error" class="hidden text-urgent text-xs"></p>
+
+            <button type="submit" id="contact-form-btn"
+                    class="w-full bg-gold hover:bg-gold-light text-navy font-bold py-4 text-sm uppercase tracking-[0.15em] transition-colors mt-2 disabled:opacity-60 disabled:cursor-not-allowed">
               Submit Free Case Evaluation →
             </button>
           </form>
+
+          {{-- Success state --}}
+          <div id="contact-form-success" class="hidden text-center py-10">
+            <div class="w-16 h-16 mx-auto mb-5 border-2 border-gold flex items-center justify-center">
+              <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <h4 class="font-display text-2xl text-cream font-bold mb-3">We've Got Your Request</h4>
+            <p class="text-cream/60 text-sm leading-relaxed">Someone will be in touch with you shortly.<br>Keep your phone nearby.</p>
+          </div>
         </div>
       </div>
 

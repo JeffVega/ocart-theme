@@ -4,6 +4,7 @@ import.meta.glob([
 ]);
 
 import './header.js';
+import './forms.js';
 import './faq.js';
 import './animations.js';
 import './single.js';
