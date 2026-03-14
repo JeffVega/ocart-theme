@@ -22,7 +22,7 @@
         {{-- Star rating trust line --}}
         <div class="animate-fade-up delay-150 flex items-center gap-2 mb-5">
           <span class="text-gold text-lg leading-none">★★★★★</span>
-          <span class="text-cream/60 text-sm">Rated by <span class="text-cream font-medium">500+</span> Orange County clients</span>
+          <span class="text-cream font-medium"> Serving all of Orange County</span>
         </div>
 
         <h1 class="font-display font-bold leading-none mb-2">
@@ -52,7 +52,7 @@
 
         <div class="animate-fade-up delay-600 mt-6 flex flex-wrap gap-6 text-cream/40 text-xs uppercase tracking-widest">
           <span>✓ No Upfront Fees</span>
-          <span>✓ Confidential</span>
+          <span>✓ Attorneys Only</span>
           <span>✓ Se Habla Español</span>
           <span>✓ All OC Courts</span>
         </div>

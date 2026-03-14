@@ -14,14 +14,14 @@
   <body @php(body_class('bg-navy font-body text-cream antialiased'))>
     @php(wp_body_open())
 
-    <div id="app">
+    <div id="app" class="min-h-screen flex flex-col">
       <a class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-gold focus:text-navy focus:px-4 focus:py-2 focus:font-bold" href="#main">
         {{ __('Skip to content', 'sage') }}
       </a>
 
       @include('sections.header')
 
-      <main id="main" class="pb-16 lg:pb-0">
+      <main id="main" class="pb-16 lg:pb-0 flex-1">
         @yield('content')
       </main>
 
